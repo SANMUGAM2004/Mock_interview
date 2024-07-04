@@ -1,0 +1,11 @@
+[
+    {
+        "answer": "Machine learning is a branch of artificial intelligence that involves the use of data and algorithms to imitate the way humans learn, gradually improving its accuracy."
+    },
+    {
+        "answer": "Neural networks are a series of algorithms that attempt to recognize underlying relationships in a set of data through a process that mimics the way the human brain operates."
+    },
+    {
+        "answer": "Supervised learning is a type of machine learning where the model is trained on labeled data. Unsupervised learning, on the other hand, involves training on data that is not labeled and the model tries to learn the patterns and the structure from the data."
+    }
+]

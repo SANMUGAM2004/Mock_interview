@@ -1,0 +1,17 @@
+[
+    {
+        "answer": "Cloud computing is the delivery of computing services over the internet, including storage, processing power, and databases."
+    },
+    {
+        "answer": "Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS)."
+    },
+    {
+        "answer": "AWS is a comprehensive and widely adopted cloud platform offered by Amazon, providing over 200 fully featured services from data centers globally."
+    },
+    {
+        "answer": "Serverless computing allows you to build. AWS Lambda is an example of serverless computing."
+    },
+    {
+        "answer": "Benefits of cloud computing include cost savings, scalability, flexibility, disaster recovery, and security."
+    }
+]

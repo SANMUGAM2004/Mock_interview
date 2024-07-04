@@ -1,0 +1,20 @@
+[
+    {
+        "answer": "The MERN stack is a collection of technologies that enables faster application development. It is made up of MongoDB, Express.js, React, and Node.js."
+    },
+    {
+        "answer": "Express.js is a web application framework for Node.js, designed for building web applications and APIs. It handles the server-side logic, routing, and middleware in the MERN stack."
+    },
+    {
+        "answer": "State management in a React application can be handled using various methods such as React's built-in useState hook, Context API for simpler state management, or third-party libraries like Redux for more complex state management."
+    },
+    {
+        "answer": "React.js is a JavaScript library used for building user interfaces, particularly single-page applications. It allows developers to create reusable UI components and manage the application's view layer."
+    },
+    {
+        "answer": "Advantages of using the MERN stack include: a unified language (JavaScript) across the entire stack, efficient and scalable database (MongoDB), powerful server-side framework (Express.js), highly dynamic and interactive UIs (React.js), and non-blocking event-driven server (Node.js)."
+    },
+    {
+        "answer": "The virtual DOM in React is a lightweight copy of the real DOM. React keeps this virtual DOM in memory and synchronizes it with the real DOM using a process called reconciliation. This makes updates faster and more efficient, as React only re-renders the parts of the DOM that have actually changed."
+    }
+]

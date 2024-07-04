@@ -1,0 +1,20 @@
+[
+    {
+        "question": "What is the MERN stack?"
+    },
+    {
+        "question": "Explain the role of Express.js in the MERN stack."
+    },
+    {
+        "question": "How do you handle state management in a React application?"
+    },
+    {
+        "question": "Explain the role of React.js in the MERN stack."
+    },
+    {
+        "question": "What are some advantages of using the MERN stack?"
+    },
+    {
+        "question": "What is the virtual DOM in React?"
+    }
+]

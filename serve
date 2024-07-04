@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Start the SageMaker model server
+exec gunicorn --timeout 60 -k gevent -b 0.0.0.0:8080 -w 1 "sagemaker_containers.entry_point:serve()"

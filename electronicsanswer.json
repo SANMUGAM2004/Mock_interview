@@ -1,0 +1,11 @@
+[
+    {
+        "answer": "Ohm's Law states that the current through a conductor between two points is directly proportional to the voltage across the two points. It is usually expressed as V = IR, where V is the voltage, I is the current, and R is the resistance."
+    },
+    {
+        "answer": "AC (Alternating Current) is a type of electrical current in which the direction of the flow of electrons switches back and forth at regular intervals or cycles. DC (Direct Current) is the unidirectional flow of electric charge."
+    },
+    {
+        "answer": "The basic components of an electronic circuit are resistors, capacitors, inductors, diodes, and transistors. These components control the flow of electricity in the circuit and perform different functions."
+    }
+]
