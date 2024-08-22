@@ -1,0 +1,129 @@
+pip install papermill
+pip install spacy
+pip -m ........... en-large..
+
+================================
+
+import boto3
+import pandas as pd
+import json
+# Install spacy and download the model
+try:
+    import spacy
+except ImportError:
+    import os
+    os.system('pip install spacy')
+    os.system('python -m spacy download en_core_web_lg')
+    import spacy
+
+
+# Initialize the S3 client
+s3 = boto3.client('s3')
+
+# Parameters
+bucket_name = None
+data_key_answer = None
+
+# Specify the bucket name and file key
+bucket = "newreactbucket"
+data_key_answer = 'cloudanswer.json'
+data_key_useranswer = 'useranswer.json'
+result_key = 'result'
+output_bucket = "mockinterviewoutput"
+
+# Function to read a JSON file from S3
+def read_json_from_s3(bucket, key):
+    response = s3.get_object(Bucket=bucket, Key=key)
+    content = response['Body'].read().decode('utf-8')
+    return json.loads(content)
+
+# Read the JSON data
+answers_data = read_json_from_s3(bucket, data_key_answer)
+user_answer = read_json_from_s3(bucket, data_key_useranswer)
+
+# Convert JSON data to DataFrame (optional, if you need it as DataFrame)
+answers_df = pd.DataFrame(answers_data)
+useranswer_df = pd.DataFrame(user_answer)
+
+# Print the data
+# print("Expected Answers:\n", answers_df)
+# print("User Answers:\n", useranswer_df)
+
+# Initialize the SpaCy model
+nlp = spacy.load("en_core_web_lg")
+
+# Function to calculate similarity between two texts
+def calculate_similarity(answer, user_answer):
+    doc1 = nlp(answer)
+    doc2 = nlp(user_answer)
+    return doc1.similarity(doc2)
+
+# Calculate similarity for each question and store the scores
+similarity_scores = []
+for i in range(len(answers_df)):
+    expected_answer = answers_df.loc[i, 'answer']
+    provided_answer = useranswer_df.loc[i, 'answer']
+    similarity = calculate_similarity(expected_answer, provided_answer)
+    similarity_scores.append(similarity)
+    print(f"Question {i + 1}: Similarity Score = {similarity}")
+
+# Calculate the overall score (average similarity)
+overall_score = sum(similarity_scores) / len(similarity_scores)
+print(f"Overall Similarity Score: {overall_score}")
+result = {"overall_score": overall_score}
+result_json = json.dumps(result)
+s3.put_object(Bucket=output_bucket, Key=result_key, Body=result_json)
+print("Result saved to S3 bucket.")
+===========================================================================================================
+lambda function code:
+
+import json
+import boto3
+import websocket
+import requests
+
+def lambda_handler(event, context):
+    # Extract bucket name and file key from the event
+    bucket_name = event['bucket']
+    data_key_answer = event['data_key_answer']
+    
+    # SageMaker notebook instance name
+    notebook_instance_name = 'mockinterview'
+    
+    # Create a presigned URL to access the SageMaker notebook
+    sm_client = boto3.client('sagemaker')
+    url = sm_client.create_presigned_notebook_instance_url(NotebookInstanceName=notebook_instance_name)['AuthorizedUrl']
+    
+    url_tokens = url.split('/')
+    http_proto = url_tokens[0]
+    http_hn = url_tokens[2].split('?')[0].split('#')[0]
+
+    # Start a session to get cookies
+    s = requests.Session()
+    r = s.get(url)
+    cookies = "; ".join(key + "=" + value for key, value in s.cookies.items())
+
+    # Create a WebSocket connection to the notebook instance
+    ws = websocket.create_connection(
+        "wss://{}/terminals/websocket/1".format(http_hn),
+        cookie=cookies,
+        host=http_hn,
+        origin=http_proto + "//" + http_hn
+    )
+
+    # Command to execute the notebook using papermill
+    notebook_command = f"""[
+        "stdin",
+        "papermill /home/ec2-user/SageMaker/first.ipynb /home/ec2-user/SageMaker/output_notebook.ipynb -p bucket_name '{bucket_name}' -p data_key_answer '{data_key_answer}'\\r"
+    ]"""
+
+    # Send the command to the WebSocket
+    ws.send(notebook_command)
+    ws.close()
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Lambda function executed successfully and notebook is processing the file.')
+    }
+
+

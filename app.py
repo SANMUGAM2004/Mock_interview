@@ -7,13 +7,13 @@ import boto3
 import os
 
 app = Flask(__name__)
-app.secret_key = 'sanmugamhm2004'  # Needed for session management
+app.secret_key = 'sanmugamhm2004'  
 
 # AWS S3 configuration
-AWS_ACCESS_KEY_ID = 'Your Access key'
-AWS_SECRET_ACCESS_KEY = 'Your secret key'
-S3_BUCKET_NAME = 'Your bucket name'
-OUTPUT_BUCKET_NAME = 'Your output bucket name'
+AWS_ACCESS_KEY_ID = 'Your AWS Access Key'
+AWS_SECRET_ACCESS_KEY = 'Your AWS Secret key'
+S3_BUCKET_NAME = 'newreactbucket'
+OUTPUT_BUCKET_NAME = 'mockinterviewoutput'
 
 # Initialize boto3 client
 s3_client = boto3.client(
@@ -43,7 +43,7 @@ def write_to_useranswer_file(answer, question_number):
     with open(useranswer_filename, 'w') as file:
         json.dump(user_answers, file, indent=4)
 
-def record_speech(duration=10):
+def record_speech(duration=3):
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
     audio_segments = []
@@ -151,6 +151,7 @@ def next_question():
 
     if question_number < num_questions:
         question = questions[question_number]
+        question = question['question'] 
         return render_template('question.html', question=question)
     else:
         return redirect(url_for('completed'))
